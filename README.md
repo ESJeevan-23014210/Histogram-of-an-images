@@ -1,114 +1,193 @@
-# Histogram-of-an-images
-
+# EX 04: IMAGE-TRANSFORMATIONS
+## NAME: Jeevan E S
+## REG NO:212223230091
 ## Aim
-To obtain a histogram for finding the frequency of pixels in an Image with pixel values ranging from 0 to 255. Also write the code using OpenCV to perform histogram equalization.
+To perform image transformation such as Translation, Scaling, Shearing, Reflection, Rotation and Cropping using OpenCV and Python.
 
 ## Software Required:
 Anaconda - Python 3.7
 
 ## Algorithm:
-### Step1:
-Read the gray and color image using imread()
+## Step1:
+Import necessary libraries such as OpenCV, NumPy, and Matplotlib for image processing and visualization.
 
-### Step2:
-Print the image using imshow().
+## Step2:
+Read the input image using cv2.imread() and store it in a variable for further processing.
 
+## Step3:
+Apply various transformations like translation, scaling, shearing, reflection, rotation, and cropping by defining corresponding functions:
 
+1.Translation moves the image along the x or y-axis. 2.Scaling resizes the image by scaling factors. 3.Shearing distorts the image along one axis. 4.Reflection flips the image horizontally or vertically. 5.Rotation rotates the image by a given angle.
 
-### Step3:
-Use calcHist() function to mark the image in graph frequency for gray and color image.
+## Step4:
+Display the transformed images using Matplotlib for visualization. Convert the BGR image to RGB format to ensure proper color representation.
 
-### step4:
-Use calcHist() function to mark the image in graph frequency for gray and color image.
-
-### Step5:
-The Histogram of gray scale image and color image is shown.
-
+## Step5:
+Save or display the final transformed images for analysis and use plt.show() to display them inline in Jupyter or compatible environments.
 
 ## Program:
-```
-# Developed By: JEEVAN ES
-# Register Number: 212223230091
-```
-
-
-
-## Histogram of Grayscale Image
-
-```python
+````
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
-img = cv2.imread('parrot.jpg', cv2.IMREAD_GRAYSCALE)
-plt.imshow(img, cmap='gray')
-plt.title('Original Image')
-plt.show()plt.hist(img.ravel(),256,range = [0, 256]);
+image = cv2.imread('Chennai_Central.jpg')
+image.shape
+
+# Display the images.
+plt.imshow(image[:,:,::-1])
 plt.title('Original Image')
 plt.show()
-plt.hist(img.ravel(),256,range = [0, 256]);
-plt.title('Histogram of Original Image')
+
+# i) Image Translation
+tx, ty = 100, 200  
+M_translation = np.float32([[1, 0, tx], [0, 1, ty]])  
+translated_image = cv2.warpAffine(image, M_translation, (636, 438))
+plt.imshow(translated_image[:,:,::-1])
+plt.title("Translated Image")
+plt.axis('on')
 plt.show()
-img_eq = cv2.equalizeHist(img)
-plt.hist(img_eq.ravel(), 256, range = [0, 256])
-plt.title('Equalized Histogram')
 
-```
+# Image Scaling
+fx, fy = 2.0, 1.0  
+scaled_image = cv2.resize(image, None, fx=fx, fy=fy, interpolation=cv2.INTER_LINEAR)
+plt.imshow(scaled_image[:,:,::-1]) 
+plt.title("Scaled Image") 
+plt.axis('on')
+plt.show()
+
+# Image Shearing
+shear_matrix = np.float32([[1, 0.5, 0], [0.5, 1, 0]])  
+sheared_image = cv2.warpAffine(image, shear_matrix, (636, 438))
+plt.imshow(sheared_image[:,:,::-1])
+plt.title("Sheared Image") 
+plt.axis('on')
+plt.show()
+
+# Image Reflection
+reflected_image = cv2.flip(image, 2)
+# Show original image 
+plt.figure(figsize=(10, 5))
+
+plt.subplot(1, 2, 1)
+plt.imshow(image[:, :, ::-1])
+plt.title("Original Image")
+plt.axis('off')
+
+# Show reflected image 
+plt.subplot(1, 2, 2)
+plt.imshow(reflected_image[:,:,::-1])
+plt.title("Reflected Image")
+plt.axis('off')
+
+plt.tight_layout()
+plt.show()
+
+# Image Rotation
+(height, width) = image.shape[:2] 
+angle = 45  
+center = (width // 2, height // 2)  
+M_rotation = cv2.getRotationMatrix2D(center, angle, 1)  
+rotated_image = cv2.warpAffine(image, M_rotation, (width, height))
+plt.imshow(cv2.cvtColor(rotated_image, cv2.COLOR_BGR2RGB))  
+plt.title("Rotated Image")  
+plt.axis('off')
+
+image .shape
+angle = 145  
+center = (636 // 2, 438 // 2)  
+M_rotation = cv2.getRotationMatrix2D(center, angle, 1)  
+rotated_image = cv2.warpAffine(image, M_rotation, (width, height))
+
+ # Display the rotated image
+plt.imshow(rotated_image[:,:,::-1])
+plt.title("Rotated Image")  # Set title
+plt.axis('off')
+plt.show()
+
+# Image Cropping
+x, y, w, h = 0, 0, 200, 150  
+cropped_image = image[y:y+h, x:x+w]
+# Show original image 
+plt.figure(figsize=(10, 5))
+
+plt.subplot(1, 2, 1)
+plt.imshow(image[:, :, ::-1])
+plt.title("Original Image")
+plt.axis('on')
+
+# Show reflected image 
+plt.subplot(1, 2, 2)
+plt.imshow(cropped_image[:,:,::-1])
+plt.title("Cropped Image")
+plt.axis('on')
+
+plt.tight_layout()
+plt.show() 
 
 
 
-
-
-
-
-
-
+``````
 ## Output:
-<img width="705" height="501" alt="image" src="https://github.com/user-attachments/assets/137eda2d-069b-4430-bba7-301a88dbc951" />
+## ORIGINAL IMAGE
+<img width="623" height="470" alt="image" src="https://github.com/user-attachments/assets/6a724880-5d06-4817-993f-23f8b6357400" />
 
-<img width="752" height="540" alt="image" src="https://github.com/user-attachments/assets/08e32189-3e4c-4410-970e-a90e8bc1a847" />
-<img width="747" height="561" alt="image" src="https://github.com/user-attachments/assets/15b7382c-2c8a-4dcc-968c-1fda218b442a" />
+### i)Image Translation
+<br>
+<img width="632" height="470" alt="image" src="https://github.com/user-attachments/assets/da2e17fc-c463-46bd-bd69-31d3c323c6f2" />
 
-## Histogram of Color Image
-``` python
-img = cv2.imread('parrot.jpg', cv2.IMREAD_COLOR)
-img_hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-img_hsv[:,:,2] = cv2.equalizeHist(img_hsv[:, :, 2])
-img_eq = cv2.cvtColor(img_hsv, cv2.COLOR_HSV2BGR)
-plt.imshow(img_eq[:,:,::-1]); 
-plt.title('Equalized Image');
-plt.show()
-plt.hist(img_eq.ravel(),256,range = [0, 256]);
-plt.title('Histogram Equalized');
-plt.show()
+<br>
+<br>
+<br>
 
-```
-
-## OUTPUT
-<img width="711" height="499" alt="image" src="https://github.com/user-attachments/assets/95f61691-04b6-42d5-ac95-3b8ae7cc6527" />
-<img width="711" height="481" alt="image" src="https://github.com/user-attachments/assets/adae27d3-a76f-47bf-b261-8e0dd2a31ef5" />
-<img width="735" height="536" alt="image" src="https://github.com/user-attachments/assets/4117281e-b1a9-4d48-87f5-00e4dd92f0c3" />
-
-## Histogram Equilization of GrayScale Image
-``` python
-import cv2
-import numpy as np
-import matplotlib.pyplot as plt
-img = cv2.imread('parrot.jpg', cv2.IMREAD_GRAYSCALE)
-plt.subplot(221); plt.imshow(img[:, :, ::-1]); plt.title('Original Color Image')
-plt.subplot(222); plt.imshow(img_eq[:, :, ::-1]); plt.title('Equalized Image')
-plt.subplot(223); plt.hist(img.ravel(),256,range = [0, 256]); plt.title('Original Image')
-plt.subplot(224); plt.hist(img_eq.ravel(),256,range = [0, 256]); plt.title('Histogram Equalized');plt.show()
-plt.figure(figsize = [15,4])
-plt.subplot(121); plt.hist(img.ravel(),256,range = [0, 256]); plt.title('Original Image')
-plt.subplot(122); plt.hist(img_eq.ravel(),256,range = [0, 256]); plt.title('Histogram Equalized')
-```
-
-## OUTPUT
-<img width="739" height="533" alt="image" src="https://github.com/user-attachments/assets/eabcadcf-377a-493c-b91d-933ca3982072" />
-<img width="1380" height="449" alt="image" src="https://github.com/user-attachments/assets/afda865e-03c9-4e0f-ad22-f0d7ac86e41d" />
+### ii) Image Scaling
+<br>
+<img width="651" height="221" alt="image" src="https://github.com/user-attachments/assets/686cda70-af70-491a-ae2c-7c6a0598fce2" />
 
 
-## RESULT
-Thus the histogram for finding the frequency of pixels in an image with pixel values ranging from 0 to 255 is obtained. Also,histogram equalization is done for the gray scale image using OpenCV.
+<br>
+<br>
+<br>
 
 
+### iii)Image shearing
+<br>
+<img width="645" height="478" alt="image" src="https://github.com/user-attachments/assets/9cf3223b-ae78-4eb7-819f-1d20ef19d4fc" />
+
+
+<br>
+<br>
+<br>
+
+
+### iv)Image Reflection
+<br>
+<img width="646" height="476" alt="image" src="https://github.com/user-attachments/assets/a090de24-f63c-44e7-8e50-2a7544bde4ec" />
+
+<br>
+<br>
+<br>
+
+
+
+### v)Image Rotation
+<br>
+<img width="650" height="471" alt="image" src="https://github.com/user-attachments/assets/25d7e0a6-178e-4fc9-9cce-4f15ea1b43c6" />
+
+<br>
+<br>
+<br>
+
+
+
+### vi)Image Cropping
+<br>
+<img width="735" height="511" alt="image" src="https://github.com/user-attachments/assets/4d8efd72-87a3-48c7-b6cd-c9e5fa9ba1fe" />
+
+<br>
+<br>
+<br>
+
+
+## Result: 
+
+Thus the different image transformations such as Translation, Scaling, Shearing, Reflection, Rotation and Cropping are done using OpenCV and python programming.
